@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Ensure the script is run with sudo for hardware/firewall metrics
+# Need to run in sudo
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script with sudo."
   exit 1
 fi
 
-# 1. System Report Header
+# 1. System Report 
 HOSTNAME=$(hostname)
 USERNAME=${SUDO_USER:-$USER}
 DATETIME=$(date "+%Y-%m-%d %H:%M:%S")
@@ -25,7 +25,7 @@ echo "OS: $NAME $VERSION"
 # Uptime
 echo "Uptime: $(uptime -p 2>/dev/null || uptime | awk -F'( |,|:)+' '{print $6 " hours, " $7 " minutes"}')"
 
-# CPU Processor Make and Model (Using lshw from your list)
+# CPU Processor Make and Model 
 CPU=$(sudo lshw -class processor 2>/dev/null | awk -F'product: ' '/product:/ {print $2; exit}')
 echo "CPU: ${CPU:-Not Found}"
 
@@ -33,15 +33,15 @@ echo "CPU: ${CPU:-Not Found}"
 RAM=$(free -h | awk '/^Mem:/ {print $2}')
 echo "RAM: $RAM"
 
-# Disk(s) Make, Model, and Size (Using lshw from your list)
+# Disk Make, Model, and Size
 DISKS=$(sudo lshw -class disk 2>/dev/null | awk -F'product: |size: ' '/product:/ {prod=$2} /size:/ {print prod " " $2}' | paste -sd ', ' -)
 echo "Disk(s): $DISKS"
 
-# Video Card Make and Model (Using lshw from your list)
+# Video Card Make and Model 
 VIDEO=$(sudo lshw -class display 2>/dev/null | awk -F'product: ' '/product:/ {print $2; exit}')
 echo "Video: ${VIDEO:-Not Found}"
 
-# Network Configurations (Using ip r and ip a from your list)
+# Network Configurations
 GATEWAY_IP=$(ip r | awk '/default/ {print $3}')
 DEFAULT_INT=$(ip r | awk '/default/ {print $5}')
 HOST_ADDRESS=$(ip a show dev "$DEFAULT_INT" 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1)
