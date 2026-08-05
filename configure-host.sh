@@ -37,10 +37,10 @@ while [ "$1" != "" ]; do
         elif [ "$1" == "-ip" ]; then
         DESIRED_IP="$2"
         
-        # Grab the SECOND IP (LAN), not the FIRST IP (Management)
+        # Grab the SECOND IP (LAN)
         CURRENT_IP=$(hostname -I | awk '{print $2}')
         
-        # Safety check to prevent sed from breaking the file if $2 is empty
+        # Safety check to prevent network container error
         if [ -z "$CURRENT_IP" ]; then
             echo "Error: Could not detect a LAN IP address."
             exit 1
@@ -85,7 +85,7 @@ while [ "$1" != "" ]; do
                 fi
             fi
         else
-            # Entry doesn't exist, just append it
+            # Adding Entry if doesn't exist
             echo "$DESIRED_IP $DESIRED_NAME" >> /etc/hosts
             
             logger "Added $DESIRED_NAME with IP $DESIRED_IP to /etc/hosts"
@@ -93,10 +93,9 @@ while [ "$1" != "" ]; do
                 echo "Added $DESIRED_NAME with IP $DESIRED_IP to /etc/hosts"
             fi
         fi
-        shift 3 # Move past the flag, the name, and the IP
+        shift 3 
         
     else
-        # If we hit an unknown argument, just skip it
         shift
     fi
 done
