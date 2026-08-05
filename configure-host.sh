@@ -34,10 +34,17 @@ while [ "$1" != "" ]; do
         fi
         shift 2 # Move past the flag and the value
         
-    elif [ "$1" == "-ip" ]; then
+        elif [ "$1" == "-ip" ]; then
         DESIRED_IP="$2"
-        # hostname -I gets all IPs, awk grabs just the first one
-        CURRENT_IP=$(hostname -I | awk '{print $1}')
+        
+        # Grab the SECOND IP (LAN), not the FIRST IP (Management)
+        CURRENT_IP=$(hostname -I | awk '{print $2}')
+        
+        # Safety check to prevent sed from breaking the file if $2 is empty
+        if [ -z "$CURRENT_IP" ]; then
+            echo "Error: Could not detect a LAN IP address."
+            exit 1
+        fi
         
         if [ "$CURRENT_IP" != "$DESIRED_IP" ]; then
             sed -i "s/$CURRENT_IP/$DESIRED_IP/g" /etc/netplan/*.yaml
