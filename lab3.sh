@@ -26,5 +26,5 @@ run_cmd scp configure-host.sh remoteadmin@server2-mgmt:/root
 run_cmd ssh remoteadmin@server2-mgmt -- /root/configure-host.sh $VERBOSE -name webhost -ip 192.168.16.4 -hostentry loghost 192.168.16.3
 
 # 3. Update the local desktop Linux VM hosts file
-run_cmd ./configure-host.sh $VERBOSE -hostentry loghost 192.168.16.3
-run_cmd ./configure-host.sh $VERBOSE -hostentry webhost 192.168.16.4
+sudo ./configure-host.sh $VERBOSE -hostentry loghost 192.168.16.3
+sudo ./configure-host.sh $VERBOSE -hostentry webhost 192.168.16.4
