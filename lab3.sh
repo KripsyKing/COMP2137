@@ -19,11 +19,11 @@ run_cmd() {
 
 # 1. Deploy and configure server1-mgmt (loghost)
 run_cmd scp configure-host.sh remoteadmin@server1-mgmt:/root
-run_cmd ssh remoteadmin@server1-mgmt -- /parallels/COMP2137/configure-host.sh $VERBOSE -name loghost -ip 192.168.16.3 -hostentry webhost 192.168.16.4
+run_cmd ssh remoteadmin@server1-mgmt -- /root/configure-host.sh $VERBOSE -name loghost -ip 192.168.16.3 -hostentry webhost 192.168.16.4
 
 # 2. Deploy and configure server2-mgmt (webhost)
 run_cmd scp configure-host.sh remoteadmin@server2-mgmt:/root
-run_cmd ssh remoteadmin@server2-mgmt -- /parallels/COMP2137/configure-host.sh $VERBOSE -name webhost -ip 192.168.16.4 -hostentry loghost 192.168.16.3
+run_cmd ssh remoteadmin@server2-mgmt -- /root/configure-host.sh $VERBOSE -name webhost -ip 192.168.16.4 -hostentry loghost 192.168.16.3
 
 # 3. Update the local desktop Linux VM hosts file
 run_cmd ./configure-host.sh $VERBOSE -hostentry loghost 192.168.16.3
