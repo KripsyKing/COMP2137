@@ -7,7 +7,7 @@
   become: yes                # run the tasks with sudo
   tasks:
     # install the mysql database server package and the ufw firewall
-    - name: Install mysql server
+    - name: Install mysql server and ufw
       apt:
         name: 
           - mysql-server
