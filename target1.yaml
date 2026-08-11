@@ -6,10 +6,12 @@
   remote_user: remoteadmin   # log in as remoteadmin
   become: yes                # run the tasks with sudo
   tasks:
-    # install the apache2 web server package
-    - name: Install apache2
+    # install the apache2 web server package and the ufw firewall 
+    - name: Install apache2 and ufw
       apt:
-        name: apache2
+        name: 
+          - apache2
+          - ufw
         state: present
         update_cache: yes
 
