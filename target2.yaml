@@ -1,0 +1,33 @@
+---
+# target2.yaml - installs a database server on target2 and locks down the firewall
+
+- name: Configure target2 as a database server
+  hosts: target2-mgmt        # the machine this play runs on
+  remote_user: remoteadmin   # log in as remoteadmin
+  become: yes                # run the tasks with sudo
+  tasks:
+    # install the mysql database server package
+    - name: Install mysql server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+
+    # allowing ssh 
+    - name: Allow ssh through firewall
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    # allowing database connections to mysql
+    - name: Allow mysql through firewall
+      community.general.ufw:
+        rule: allow
+        port: '3306'
+        proto: tcp
+
+    # turn the firewall on last, after the rules exist
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
