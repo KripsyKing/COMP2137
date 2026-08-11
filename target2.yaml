@@ -6,10 +6,12 @@
   remote_user: remoteadmin   # log in as remoteadmin
   become: yes                # run the tasks with sudo
   tasks:
-    # install the mysql database server package
+    # install the mysql database server package and the ufw firewall
     - name: Install mysql server
       apt:
-        name: mysql-server
+        name: 
+          - mysql-server
+          - ufw
         state: present
         update_cache: yes
 
